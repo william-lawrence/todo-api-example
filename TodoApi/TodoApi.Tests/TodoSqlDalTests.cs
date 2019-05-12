@@ -17,11 +17,8 @@ namespace TodoApi.Tests
         public void TestGetAllTodosId()
         {
             TodoSqlDal todoSqlDal = new TodoSqlDal(connectionString);
-
             IList<Todo> todoItems = new List<Todo>();
-
             todoItems = todoSqlDal.GetAllTodoItems();
-
             Assert.AreEqual(1, todoItems[0].Id);
         }
 
@@ -30,11 +27,8 @@ namespace TodoApi.Tests
         public void TestGetAllTodosText()
         {
             TodoSqlDal todoSqlDal = new TodoSqlDal(connectionString);
-
             IList<Todo> todoItems = new List<Todo>();
-
             todoItems = todoSqlDal.GetAllTodoItems();
-
             Assert.AreEqual("test1", todoItems[0].TodoText);
         }
 
@@ -43,11 +37,8 @@ namespace TodoApi.Tests
         public void TestGetAllTodosIsCompleted()
         {
             TodoSqlDal todoSqlDal = new TodoSqlDal(connectionString);
-
             IList<Todo> todoItems = new List<Todo>();
-
             todoItems = todoSqlDal.GetAllTodoItems();
-
             Assert.AreEqual(false, todoItems[0].IsCompleted);
         }
 
@@ -56,11 +47,8 @@ namespace TodoApi.Tests
         public void TestGetAllTodosIsDeleted()
         {
             TodoSqlDal todoSqlDal = new TodoSqlDal(connectionString);
-
             IList<Todo> todoItems = new List<Todo>();
-
             todoItems = todoSqlDal.GetAllTodoItems();
-
             Assert.AreEqual(false, todoItems[0].IsDeleted);
         }
     }
