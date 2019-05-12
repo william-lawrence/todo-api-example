@@ -59,12 +59,28 @@ namespace TodoApi.Controllers
         {
             Todo todo = todoDal.GetTodoItemById(id);
 
-            if (todo.Id == 0 || todo.TodoText == null)
+            if (NoTodoFound(todo))
             {
                 return NotFound();
             }
 
             return new JsonResult(todo);
+        }
+
+        /// <summary>
+        /// If no todo is found, 404
+        /// </summary>
+        /// <param name="todo">the todo to validate.</param>
+        /// <returns>True if the todo is valid, false if it is not.</returns>
+        /// <remarks>
+        /// 
+        /// If no todo is found, the text is NULL and the Id is zero,
+        /// but either comdition is sufficient.
+        /// 
+        /// </remarks>
+        private static bool NoTodoFound(Todo todo)
+        {
+            return todo.Id == 0 || todo.TodoText == null;
         }
     }
 
