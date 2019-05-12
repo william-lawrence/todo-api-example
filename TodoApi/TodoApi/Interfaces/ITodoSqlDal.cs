@@ -9,5 +9,6 @@ namespace TodoApi.Interfaces
     public interface ITodoSqlDal
     {
         IList<Todo> GetAllTodoItems();
+        Todo GetTodoItemById(int id);
     }
 }

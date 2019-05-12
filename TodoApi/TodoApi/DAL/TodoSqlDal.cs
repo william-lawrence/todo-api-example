@@ -26,7 +26,11 @@ namespace TodoApi.DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string sql = $@"SELECT * FROM TodoItems;";
+                    string sql = $@"SELECTSELECT [Id],
+                                    [TodoText],
+                                    [IsCompleted],
+                                    [IsDeleted]
+                                    FROM TodoItems;";
 
                     SqlCommand cmd = new SqlCommand(sql, connection);
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -43,6 +47,42 @@ namespace TodoApi.DAL
             }
 
             return todoItems;
+        }
+
+        public Todo GetTodoItemById(int id)
+        {
+            Todo todo = new Todo();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string sql = $@"SELECT [Id],
+                                    [TodoText],
+                                    [IsCompleted],
+                                    [IsDeleted]
+                                    FROM TodoItems
+                                    WHERE Id = @passedId;";
+
+                    SqlCommand cmd = new SqlCommand(sql, connection);
+                    cmd.Parameters.AddWithValue("@passedId", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        todo = MapRowToTodoItem(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return todo;
         }
 
         private Todo MapRowToTodoItem(SqlDataReader reader)
