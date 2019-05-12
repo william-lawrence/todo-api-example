@@ -17,6 +17,32 @@ namespace TodoApi.DAL
             this.connectionString = connectionString;
         }
 
+        public void CreateTodoItem(Todo todo)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = $@"INSERT INTO TodoItems ([TodoText], [IsCompleted],[IsDeleted])
+                                    OUTPUT INSERTED.Id
+                                    VALUES(@passedTodoText, @passedIsCompleted, @passedIsDeleted)";
+
+                    SqlCommand cmd = new SqlCommand(sql, connection);
+
+                    cmd.Parameters.AddWithValue("@passedTodoText", todo.TodoText);
+                    cmd.Parameters.AddWithValue("@passedIsCompleted", todo.IsCompleted);
+                    cmd.Parameters.AddWithValue("@passedIsDeleted", todo.IsDeleted);
+
+                    todo.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IList<Todo> GetAllTodoItems()
         {
             IList<Todo> todoItems = new List<Todo>();
@@ -26,7 +52,7 @@ namespace TodoApi.DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string sql = $@"SELECTSELECT [Id],
+                    string sql = $@"SELECT [Id],
                                     [TodoText],
                                     [IsCompleted],
                                     [IsDeleted]

@@ -68,6 +68,19 @@ namespace TodoApi.Controllers
         }
 
         /// <summary>
+        /// Create a new todo
+        /// </summary>
+        /// <param name="todo"></param>
+        /// <returns>The newly created todo object with its newly generated id</returns>
+        [HttpPost]
+        public IActionResult CreateTodoItem(Todo todo)
+        {
+            todoDal.CreateTodoItem(todo);
+
+            return new JsonResult(todo);
+        }
+
+        /// <summary>
         /// If no todo is found, 404
         /// </summary>
         /// <param name="todo">the todo to validate.</param>

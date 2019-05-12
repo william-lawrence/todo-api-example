@@ -56,5 +56,22 @@ namespace TodoApi.Tests
             Todo todo = todoSqlDal.GetTodoItemById(1);
             Assert.AreEqual(1, todo.Id);
         }
+
+        [TestCategory("TodoSqlDal")]
+        [TestMethod]
+        public void TestCreateTodoItems()
+        {
+            TodoSqlDal todoSqlDal = new TodoSqlDal(connectionString);
+            Todo todo = new Todo
+            {
+                TodoText = "test5",
+                IsCompleted = true,
+                IsDeleted = true
+            };
+
+            todoSqlDal.CreateTodoItem(todo);
+
+            Assert.AreEqual(5, GetRowCount("TodoItems"));
+        }
     }
 }
