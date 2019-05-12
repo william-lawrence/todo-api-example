@@ -80,6 +80,16 @@ namespace TodoApi.Controllers
             return new JsonResult(todo);
         }
 
+        [HttpPut]
+        public IActionResult UpdateTodoItem(Todo todo)
+        {
+            todoDal.UpdateTodoItem(todo);
+
+
+
+            return new JsonResult(todo);
+        }
+
         /// <summary>
         /// If no todo is found, 404
         /// </summary>

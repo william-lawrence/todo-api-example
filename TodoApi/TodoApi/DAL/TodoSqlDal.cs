@@ -111,6 +111,48 @@ namespace TodoApi.DAL
             return todo;
         }
 
+        public Todo UpdateTodoItem(Todo todo)
+        {
+            Todo updatedTodo = new Todo
+            {
+                // Generating the updated todo.
+                Id = todo.Id,
+                TodoText = todo.TodoText,
+                IsCompleted = todo.IsCompleted,
+                IsDeleted = todo.IsDeleted
+            };
+
+            int rowsAffected = 0;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string sql = $@"UPDATE TodoItems
+                                    SET TodoText = @passedTodoText, IsCompleted = @passedIsCompleted, IsDeleted = @passedIsDeleted
+                                    WHERE Id = @passedId;";
+
+                    SqlCommand cmd = new SqlCommand(sql, connection);
+
+                    cmd.Parameters.AddWithValue("@passedId", todo.Id);
+                    cmd.Parameters.AddWithValue("@passedTodoText", todo.TodoText);
+                    cmd.Parameters.AddWithValue("@passedIsCompleted", todo.IsCompleted);
+                    cmd.Parameters.AddWithValue("@passedIsDeleted", todo.IsDeleted);
+
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+            return updatedTodo;
+        }
+
         private Todo MapRowToTodoItem(SqlDataReader reader)
         {
             Todo todo = new Todo();
