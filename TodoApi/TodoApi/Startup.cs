@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TodoApi.DAL;
+using TodoApi.Interfaces;
 
 namespace TodoApi
 {
@@ -25,7 +27,12 @@ namespace TodoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            string connectionString = $@"Data Source=DESKTOP-99R8GDK\SQLEXPRESS;Initial Catalog=Todo;Integrated Security=True";
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSingleton<ITodoSqlDal>(m => new TodoSqlDal(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

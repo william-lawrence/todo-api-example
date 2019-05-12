@@ -20,8 +20,9 @@ BEGIN TRANSACTION
 CREATE TABLE TodoItems
 (
 	Id         int identity (1,1),
-	Todo       varchar(256) not null,
-	IsComplete bit          not null
+	TodoText   varchar(256) not null,
+	IsCompleted bit          not null,
+	IsDeleted  bit			not null
 
 	CONSTRAINT pk_TodoItems PRIMARY KEY (id)
 );

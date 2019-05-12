@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TodoApi.Classes;
 
 namespace TodoApi.Interfaces
 {
-    interface ITodoSqlDal
+    public interface ITodoSqlDal
     {
+        IList<Todo> GetAllTodoItems();
     }
 }
