@@ -61,7 +61,7 @@ namespace TodoApi.Controllers
 
             if (NoTodoFound(todo))
             {
-                return NotFound();
+                return NoContent();
             }
 
             return new JsonResult(todo);
@@ -75,19 +75,35 @@ namespace TodoApi.Controllers
         [HttpPost]
         public IActionResult CreateTodoItem(Todo todo)
         {
-            todoDal.CreateTodoItem(todo);
+            Todo newTodo = todoDal.CreateTodoItem(todo);
 
-            return new JsonResult(todo);
+            if(newTodo ==null)
+            {
+                BadRequest();
+            }
+
+            return new JsonResult(newTodo);
         }
 
         [HttpPut]
         public IActionResult UpdateTodoItem(Todo todo)
         {
-            todoDal.UpdateTodoItem(todo);
+           Todo updatedTodo = todoDal.UpdateTodoItem(todo);
 
+            if(updatedTodo == null)
+            {
+                BadRequest();
+            }
 
+            return new JsonResult(updatedTodo);
+        }
 
-            return new JsonResult(todo);
+        [HttpDelete("{id}")]
+        public IActionResult DeleteTodoItem(int id)
+        {
+            int itemsDeleted = todoDal.DeleteTodoItem(id);
+
+            return new JsonResult(itemsDeleted);
         }
 
         /// <summary>

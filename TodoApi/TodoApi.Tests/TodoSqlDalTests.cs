@@ -59,7 +59,7 @@ namespace TodoApi.Tests
 
         [TestCategory("TodoSqlDal")]
         [TestMethod]
-        public void TestCreateTodoItems()
+        public void TestCreateTodoItem()
         {
             TodoSqlDal todoSqlDal = new TodoSqlDal(connectionString);
             Todo todo = new Todo
@@ -69,9 +69,52 @@ namespace TodoApi.Tests
                 IsDeleted = true
             };
 
-            todoSqlDal.CreateTodoItem(todo);
+            _ = todoSqlDal.CreateTodoItem(todo);
 
             Assert.AreEqual(5, GetRowCount("TodoItems"));
+        }
+
+        [TestCategory("TodoSqlDal")]
+        [TestMethod]
+        public void TestUpdateTodoItem()
+        {
+            TodoSqlDal todoSqlDal = new TodoSqlDal(connectionString);
+            Todo todo = todoSqlDal.GetTodoItemById(1);
+            
+            // making sure we have the correct original value in the database.
+            Assert.AreEqual("test1", todo.TodoText);
+
+            todo.TodoText = "updated test1";
+
+            // getting the new value, but we don't need it so we can discard.
+            _ = todoSqlDal.UpdateTodoItem(todo);
+
+            todo = todoSqlDal.GetTodoItemById(1);
+
+            // making sure that we have to updated value in the database.
+            Assert.AreEqual("updated test1", todo.TodoText);
+        }
+
+        [TestCategory("TodoSqlDal")]
+        [TestMethod]
+        public void TestDeleteTodoItemByRowsDeleted()
+        {
+            TodoSqlDal todoSqlDal = new TodoSqlDal(connectionString);
+            int rowsDeleted = todoSqlDal.DeleteTodoItem(1);
+
+            Assert.AreEqual(1, rowsDeleted);
+        }
+
+        [TestCategory("TodoSqlDal")]
+        [TestMethod]
+        public void TestDeleteTodoItemByRowsRemaining()
+        {
+            TodoSqlDal todoSqlDal = new TodoSqlDal(connectionString);
+
+            _ = todoSqlDal.DeleteTodoItem(1);
+            int rowsRemaining = GetRowCount("TodoItems");
+
+            Assert.AreEqual(3, rowsRemaining);
         }
     }
 }

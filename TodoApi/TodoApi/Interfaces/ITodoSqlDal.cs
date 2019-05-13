@@ -10,7 +10,8 @@ namespace TodoApi.Interfaces
     {
         IList<Todo> GetAllTodoItems();
         Todo GetTodoItemById(int id);
-        void CreateTodoItem(Todo todo);
+        Todo CreateTodoItem(Todo todo);
         Todo UpdateTodoItem(Todo todo);
+        int DeleteTodoItem(int id);
     }
 }

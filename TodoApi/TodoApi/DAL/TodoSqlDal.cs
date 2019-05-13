@@ -17,8 +17,17 @@ namespace TodoApi.DAL
             this.connectionString = connectionString;
         }
 
-        public void CreateTodoItem(Todo todo)
+        public Todo CreateTodoItem(Todo todo)
         {
+            Todo newTodo = new Todo
+            {
+                Id = 0,
+                TodoText = todo.TodoText,
+                IsCompleted = todo.IsCompleted,
+                IsDeleted = todo.IsDeleted
+            };
+
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -34,13 +43,49 @@ namespace TodoApi.DAL
                     cmd.Parameters.AddWithValue("@passedIsCompleted", todo.IsCompleted);
                     cmd.Parameters.AddWithValue("@passedIsDeleted", todo.IsDeleted);
 
-                    todo.Id = (int)cmd.ExecuteScalar();
+                    newTodo.Id = (int)cmd.ExecuteScalar();
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+
+            if(newTodo.Id ==0)
+            {
+                return null;
+            }
+            else
+            {
+                return newTodo;
+            }
+        }
+
+        public int DeleteTodoItem(int id)
+        {
+            int rowsDeleted = 0;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string sql = $@"DELETE FROM TodoItems
+                                    WHERE Id = @passedId;";
+
+                    SqlCommand cmd = new SqlCommand(sql, connection);
+                    cmd.Parameters.AddWithValue("@passedId", id);
+
+                    rowsDeleted = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rowsDeleted;
         }
 
         public IList<Todo> GetAllTodoItems()
@@ -149,8 +194,15 @@ namespace TodoApi.DAL
                 throw ex;
             }
 
+            if (rowsAffected != 1)
+            {
+                return null;
+            }
+            else
+            {
+                return updatedTodo;
+            }
 
-            return updatedTodo;
         }
 
         private Todo MapRowToTodoItem(SqlDataReader reader)
