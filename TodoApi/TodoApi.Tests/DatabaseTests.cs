@@ -11,7 +11,7 @@ namespace TodoApi.Tests
     public class DatabaseTests
     {
         
-        public const string ConnectionString = @"Data Source=DESKTOP-99R8GDK\SQLEXPRESS;Initial Catalog=Todo;Integrated Security=True";
+        public const string ConnectionString = @"Data Source=DESKTOP-BGH8GGH\SQLEXPRESS01;Initial Catalog=Todo;Integrated Security=True";
         private TransactionScope transaction;
 
         [TestInitialize]

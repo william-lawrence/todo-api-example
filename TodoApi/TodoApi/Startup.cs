@@ -28,7 +28,7 @@ namespace TodoApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            string connectionString = $@"Data Source=DESKTOP-99R8GDK\SQLEXPRESS;Initial Catalog=Todo;Integrated Security=True";
+            string connectionString = $@"Data Source=DESKTOP-BGH8GGH\SQLEXPRESS;Initial Catalog=Todo;Integrated Security=True";
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
