@@ -77,7 +77,7 @@ namespace TodoApi.Controllers
         {
             Todo newTodo = todoDal.CreateTodoItem(todo);
 
-            if(newTodo ==null)
+            if (newTodo == null)
             {
                 BadRequest();
             }
@@ -88,9 +88,9 @@ namespace TodoApi.Controllers
         [HttpPut]
         public IActionResult UpdateTodoItem(Todo todo)
         {
-           Todo updatedTodo = todoDal.UpdateTodoItem(todo);
+            Todo updatedTodo = todoDal.UpdateTodoItem(todo);
 
-            if(updatedTodo == null)
+            if (updatedTodo == null)
             {
                 BadRequest();
             }
@@ -102,6 +102,15 @@ namespace TodoApi.Controllers
         public IActionResult DeleteTodoItem(int id)
         {
             int itemsDeleted = todoDal.DeleteTodoItem(id);
+
+            if (itemsDeleted == 1)
+            {
+                NoContent();
+            }
+            else
+            {
+                BadRequest();
+            }
 
             return new JsonResult(itemsDeleted);
         }
